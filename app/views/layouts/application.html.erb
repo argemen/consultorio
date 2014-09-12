@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Gestión de Consultas</title>
+        <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+	  	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+	  	<%= csrf_meta_tags %>
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script src="js/html5shiv.js"></script>
+        <script src="js/respond.min.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+        
+        <header>
+            <div class="headerwrapper">
+                <div class="header-left">
+                    <a href="index-2.html" class="logo">
+                        Gestión de Consultas
+                    </a>
+                    <div class="pull-right">
+                        <a href="#" class="menu-collapse">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                    </div>
+                </div><!-- header-left -->
+                
+                <div class="header-right">
+                     <div class="pull-right">
+                     <div class="btn-group btn-group-list btn-group-notification">
+                     </div>
+                     </div>
+                        <div class="btn-group btn-group-option">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                              <i class="fa fa-caret-down"></i>
+                            </button>
+                            <ul class="dropdown-menu pull-right" role="menu">
+                              <li><a href="#"><i class="glyphicon glyphicon-user"></i> My Profile</a></li>
+                        
+                              <li class="divider"></li>
+                              <li><%= link_to '<i class="glyphicon glyphicon-log-out"></i>Salir'.html_safe, destroy_user_session_path, method: :delete, :class => 'navbar-link'  %></li>
+                            </ul>
+                        </div><!-- btn-group -->
+                        
+                    </div><!-- pull-right -->
+                    
+                </div><!-- header-right -->
+                
+            </div><!-- headerwrapper -->
+        </header>
+        
+        <section>
+            <div class="mainwrapper">
+                <div class="leftpanel">
+                    <div class="media profile-left">
+                        <a class="pull-left profile-thumb" href="profile.html">                            
+                            <%= image_tag 'profile.png', class: 'img-circle', alt: '' %>
+                        </a>
+                        <div class="media-body">
+                            <% if user_signed_in? %>
+                            <h4 class="media-heading">Usuario Conectado:</h4>
+                            <small class="text-muted"><%= current_user.email %></small>
+                            <% end %>
+                        </div>
+                    </div><!-- media -->
+                    
+                    <h5 class="leftpanel-title">Menu</h5>
+                    <ul class="nav nav-pills nav-stacked">
+                        <li><a href="/citas"><i class="fa fa-edit"></i> <span>Citas</span></a></li>
+                        <li><a href="/pacientes"><i class="fa fa-navicon"></i> <span>Pacientes</span></a></li>
+                        <li><a href="/especialistas"><i class="fa fa-calendar"></i> <span>Especialistas</span></a></li>
+                        <li><a href="/especialidades"><i class="fa fa-flag"></i> <span>Especialidades</span></a></li>
+                        <li><a href="/reportes"><i class="fa  fa-plus"></i> <span>Reportes</span></a></li>
+                        <li><a href="/users"><i class="fa fa-edit"></i> <span>Usuarios</span></a></li>    
+                    </ul>
+                    
+                </div><!-- leftpanel -->
+                
+                <div class="mainpanel">
+                    <div class="pageheader">
+                        <div class="media">
+                            <div class="pageicon pull-left">
+                                <%= image_tag "#{controller_name}.png", size: "30x35"  %>
+                            </div>
+                            <div class="media-body">
+                               <h4><%= controller_name.capitalize %></h4>
+                            </div>
+                        </div><!-- media -->
+                    </div><!-- pageheader -->
+                    
+                    <div class="contentpanel">
+                        <% if notice %>
+                          <div class="alert alert-success">
+                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                             <%= notice %>
+                             </div>
+                        <% end %>
+                        <% if alert %>
+                          <p class="alert alert-danger"><%= alert %></p>
+                        <% end %>
+                        <%= yield %>
+                       
+                    </div><!-- contentpanel -->
+                    
+                </div><!-- mainpanel -->
+            </div><!-- mainwrapper -->
+        </section>
+        <script>
+            jQuery(document).ready(function(){
+                
+                jQuery('#basicTable').DataTable({
+                    responsive: true,
+                    //"columnDefs": [ { "targets": 2, "orderable": false }]
+                });
+                
+                var shTable = jQuery('#shTable').DataTable({
+                    "fnDrawCallback": function(oSettings) {
+                        jQuery('#shTable_paginate ul').addClass('pagination-active-dark');
+                    },
+                    responsive: true
+                });
+                
+                // Show/Hide Columns Dropdown
+                jQuery('#shCol').click(function(event){
+                    event.stopPropagation();
+                });
+                
+                jQuery('#shCol input').on('click', function() {
+
+                    // Get the column API object
+                    var column = shTable.column($(this).val());
+ 
+                    // Toggle the visibility
+                    if ($(this).is(':checked'))
+                        column.visible(true);
+                    else
+                        column.visible(false);
+                });
+                
+                var exRowTable = jQuery('#exRowTable').DataTable({
+                    responsive: true,
+                    "fnDrawCallback": function(oSettings) {
+                        jQuery('#exRowTable_paginate ul').addClass('pagination-active-success');
+                    },
+                    "ajax": "ajax/objects.txt",
+                    "columns": [
+                        {
+                            "class":          'details-control',
+                            "orderable":      false,
+                            "data":           null,
+                            "defaultContent": ''
+                        },
+                        { "data": "name" },
+                        { "data": "position" },
+                        { "data": "office" },
+                        { "data": "salary" }
+                    ],
+                    "order": [[1, 'asc']] 
+                });
+                
+                // Add event listener for opening and closing details
+                jQuery('#exRowTable tbody').on('click', 'td.details-control', function () {
+                    var tr = $(this).closest('tr');
+                    var row = exRowTable.row( tr );
+             
+                    if ( row.child.isShown() ) {
+                        // This row is already open - close it
+                        row.child.hide();
+                        tr.removeClass('shown');
+                    }
+                    else {
+                        // Open this row
+                        row.child( format(row.data()) ).show();
+                        tr.addClass('shown');
+                    }
+                });
+               
+                
+                // DataTables Length to Select2
+                jQuery('div.dataTables_length select').removeClass('form-control input-sm');
+                jQuery('div.dataTables_length select').css({width: '60px'});
+                jQuery('div.dataTables_length select').select2({
+                    minimumResultsForSearch: -1
+                });
+    
+            });
+        </script>
+    </body>
+</html>

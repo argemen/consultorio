@@ -1,0 +1,31 @@
+<%= form_for(@cita) do |f| %>
+  <% if @cita.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@cita.errors.count, "error") %> prohibited this cita from being saved:</h2>
+
+      <ul>
+      <% @cita.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="panel-body nopadding">
+	<%= f.hidden_field :paciente_id, :id => 'paciente_id'%>
+  <div class="form-group">
+    <%= f.label :paciente_id, class: 'col-sm-4 control-label' %>
+    <div class="col-sm-8"><%= f.autocomplete_field :paciente_cedula, autocomplete_paciente_cedula_pacientes_path, :update_elements => {:id => '#paciente_id'}, placeholder: 'Ingrese Cédula del Paciente', multiple: false, class: 'form-control' %></div>
+  </div>
+  <div class="form-group">
+    <%= f.label :especialista_id, class: 'col-sm-4 control-label' %>
+    <div class="col-sm-8"><%= f.select :especialista_id, Especialista.all.collect { |s| [ s.nombres + ' ' +s.apellidos, s.id ]}, prompt: 'Seleccione...' %></div>
+  </div>
+  <div class="form-group">
+    <%= f.label :fecha, class: 'col-sm-4 control-label' %><br>
+    <div class="col-sm-8"><%= f.date_field :fecha %></div>
+  </div>
+  <div class="panel-footer">
+    <button type="submit" class="btn btn-primary mr5">Guardar</button>
+    <button type="reset" class="btn btn-dark">Limpiar</button>
+  </div>
+<% end %>

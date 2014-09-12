@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  paciente_id: 1
+  especialista_id: 1
+  fecha: 2014-09-11
+
+two:
+  paciente_id: 1
+  especialista_id: 1
+  fecha: 2014-09-11

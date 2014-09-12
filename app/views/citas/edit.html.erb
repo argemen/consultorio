@@ -1,0 +1,15 @@
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <div class="modal-header">
+	          <button aria-hidden="true" data-dismiss="modal" class="close" type="button">&times;</button>
+	          <h4 class="panel-title">Editar Cita</h4>
+	      </div>
+    </div>
+	<%= render 'form' %>   
+</div><!-- panel -->
+<script>
+  jQuery(document).ready(function() {
+          
+      jQuery("select#cita_especialista_id").select2();
+  });
+</script>
