@@ -1,0 +1,43 @@
+<%= form_for(@especialista) do |f| %>
+  <% if @especialista.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@especialista.errors.count, "error") %> prohibited this especialista from being saved:</h2>
+
+      <ul>
+      <% @especialista.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+<div class="panel-body nopadding">
+  <div class="form-group">
+    <%= f.label :especialidad_id, class: 'col-sm-4 control-label' %>
+    <div class="col-sm-8"><%= f.select :especialidad_id, Especialidad.all.collect { |s| [ s.nombre, s.id ]}, prompt: 'Seleccione...' %></div>
+  </div>
+  <div class="form-group">
+    <%= f.label :cedula, class: 'col-sm-4 control-label' %>
+    <div class="col-sm-8"><%= f.text_field :cedula, placeholder: 'Ingrese cedula', autocomplete: 'off', class: 'form-control' %></div>
+  </div>
+  <div class="form-group">
+    <%= f.label :nombres, class: 'col-sm-4 control-label' %>
+    <div class="col-sm-8"><%= f.text_field :nombres, placeholder: 'Ingrese nombres', autocomplete: 'off', class: 'form-control' %></div>
+  </div>
+  <div class="form-group">
+    <%= f.label :apellidos, class: 'col-sm-4 control-label' %>
+    <div class="col-sm-8"><%= f.text_field :apellidos, placeholder: 'Ingrese apellidos', autocomplete: 'off', class: 'form-control' %></div>
+  </div>
+  <div class="form-group">
+    <%= f.label :email, class: 'col-sm-4 control-label' %>
+    <div class="col-sm-8"><%= f.text_field :email, placeholder: 'Ingrese el correo electronico', autocomplete: 'off', class: 'form-control' %></div>
+  </div>
+  <div class="form-group">
+    <%= f.label :telefono, class: 'col-sm-4 control-label' %>
+    <div class="col-sm-8"><%= f.text_field :telefono, placeholder: 'Ingrese el telefono', autocomplete: 'off', class: 'form-control' %></div>
+  </div>
+  <div class="panel-footer">
+    <button type="submit" class="btn btn-primary mr5">Guardar</button>
+    <button type="reset" class="btn btn-dark">Limpiar</button>
+  </div>
+<% end %>
+</div>

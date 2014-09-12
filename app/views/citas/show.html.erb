@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Paciente:</strong>
+  <%= @cita.paciente_id %>
+</p>
+
+<p>
+  <strong>Especialista:</strong>
+  <%= @cita.especialista_id %>
+</p>
+
+<p>
+  <strong>Fecha:</strong>
+  <%= @cita.fecha %>
+</p>
+
+<%= link_to 'Edit', edit_cita_path(@cita) %> |
+<%= link_to 'Back', citas_path %>
