@@ -23,9 +23,9 @@ ActiveRecord::Schema.define(version: 20140911233818) do
   end
 
   create_table "citas", force: true do |t|
-    t.integer  "paciente_id"
-    t.integer  "especialista_id"
-    t.date     "fecha"
+    t.integer  "paciente_id",     null: false
+    t.integer  "especialista_id", null: false
+    t.date     "fecha",           null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

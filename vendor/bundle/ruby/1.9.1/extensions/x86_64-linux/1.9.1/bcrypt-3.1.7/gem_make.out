@@ -1,0 +1,17 @@
+/usr/bin/ruby1.9.1 -r ./siteconf20140912-22905-2ylubw.rb extconf.rb 
+checking for ruby/util.h... yes
+creating Makefile
+
+make  clean
+
+make
+compiling crypt_blowfish.c
+compiling crypt.c
+compiling bcrypt_ext.c
+compiling crypt_gensalt.c
+compiling wrapper.c
+linking shared-object bcrypt_ext.so
+
+make  install
+/usr/bin/install -c -m 0755 bcrypt_ext.so .gem.20140912-22905-1jfnpca
+installing default bcrypt_ext libraries

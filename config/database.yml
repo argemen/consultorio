@@ -34,4 +34,8 @@ test:
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  database: consultorio
+
+staging:
+  <<: *default
+  database: consultorio

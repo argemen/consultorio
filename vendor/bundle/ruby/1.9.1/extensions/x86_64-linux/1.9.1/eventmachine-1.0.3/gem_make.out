@@ -1,0 +1,13 @@
+/usr/bin/ruby1.9.1 -r ./siteconf20140912-22905-18lqa5l.rb extconf.rb 
+creating Makefile
+
+make  clean
+
+make
+compiling rubymain.cpp
+compiling mapper.cpp
+linking shared-object fastfilereaderext.so
+
+make  install
+/usr/bin/install -c -m 0755 fastfilereaderext.so .gem.20140912-22905-ztwnz0
+installing default fastfilereaderext libraries

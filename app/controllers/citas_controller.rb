@@ -65,6 +65,11 @@ class CitasController < ApplicationController
     end
   end
 
+  #calendario de citas
+  def calendario 
+    @citas = Cita.all
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_cita

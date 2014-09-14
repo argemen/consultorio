@@ -1,0 +1,16 @@
+/usr/bin/ruby1.9.1 -r ./siteconf20140912-22905-1jkr8yg.rb extconf.rb 
+checking for mysql_ssl_set()... yes
+checking for rb_str_set_len()... yes
+checking for rb_thread_start_timer()... no
+checking for mysql.h... yes
+creating Makefile
+
+make  clean
+
+make
+compiling mysql.c
+linking shared-object mysql/mysql_api.so
+
+make  install
+/usr/bin/install -c -m 0755 mysql_api.so .gem.20140912-22905-1gl0pss/mysql
+installing default mysql_api libraries

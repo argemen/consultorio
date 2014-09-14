@@ -1,0 +1,40 @@
+/usr/bin/ruby1.9.1 -r ./siteconf20140912-22905-4hfapu.rb extconf.rb 
+checking for main() in -lpthread... yes
+creating Makefile
+
+make  clean
+
+make
+compiling locker.cc
+compiling function.cc
+compiling invocation.cc
+compiling string.cc
+compiling script.cc
+compiling signature.cc
+compiling stack.cc
+compiling primitive.cc
+compiling constants.cc
+compiling exception.cc
+compiling gc.cc
+compiling accessor.cc
+compiling backref.cc
+compiling handles.cc
+compiling heap.cc
+compiling array.cc
+compiling trycatch.cc
+compiling date.cc
+compiling object.cc
+compiling value.cc
+compiling init.cc
+compiling message.cc
+compiling template.cc
+compiling rr.cc
+compiling constraints.cc
+compiling context.cc
+compiling external.cc
+compiling v8.cc
+linking shared-object v8/init.so
+
+make  install
+/usr/bin/install -c -m 0755 init.so .gem.20140912-22905-1ghtqz/v8
+installing default init libraries

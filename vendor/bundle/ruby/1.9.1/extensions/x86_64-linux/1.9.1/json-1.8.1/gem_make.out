@@ -1,0 +1,12 @@
+/usr/bin/ruby1.9.1 -r ./siteconf20140912-22905-3pspmg.rb extconf.rb 
+creating Makefile
+
+make  clean
+
+make
+compiling parser.c
+linking shared-object json/ext/parser.so
+
+make  install
+/usr/bin/install -c -m 0755 parser.so .gem.20140912-22905-36ojcv/json/ext
+installing default parser libraries

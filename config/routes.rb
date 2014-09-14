@@ -8,6 +8,8 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'calendario', to: 'citas#calendario'
+  
   resources :especialistas
 
   resources :especialidades
