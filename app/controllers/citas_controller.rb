@@ -67,7 +67,12 @@ class CitasController < ApplicationController
 
   #calendario de citas
   def calendario 
+    #@citas = Cita.all
+  end
+  
+  def ver_citas
     @citas = Cita.all
+
   end
   
   private

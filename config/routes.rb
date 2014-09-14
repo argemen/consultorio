@@ -10,6 +10,8 @@ Rails.application.routes.draw do
 
   get 'calendario', to: 'citas#calendario'
   
+  get 'ver_citas', to: 'citas#ver_citas'
+  
   resources :especialistas
 
   resources :especialidades

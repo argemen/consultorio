@@ -7,9 +7,12 @@ class Cita < ActiveRecord::Base
   def paciente_cedula
     return paciente.cedula if paciente
   end
-
-  def institucion_nombre=(nombre)
+  
+  def paciente_cedula=(cedula)
       self.paciente = Paciente.find_by_name(cedula) unless cedula.blank?
   end
   
+  def paciente_info
+    return paciente.cedula + '-'  + paciente.nombres + ' ' + paciente.apellidos if paciente
+  end
 end

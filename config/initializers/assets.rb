@@ -9,3 +9,6 @@ Rails.application.config.assets.version = '1.0'
 
 Rails.application.config.assets.precompile += %w( style.default.css )
 Rails.application.config.assets.precompile += %w( style.calendar.css )
+Rails.application.config.assets.precompile += %w( moment.min.js )
+Rails.application.config.assets.precompile += %w( fullcalendar.min.js )
+Rails.application.config.assets.precompile += %w( jquery.ui.touch-punch.min.js )
