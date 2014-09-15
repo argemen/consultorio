@@ -13,6 +13,10 @@ class Cita < ActiveRecord::Base
   end
   
   def paciente_info
-    return paciente.cedula + '-'  + paciente.nombres + ' ' + paciente.apellidos if paciente
+    return paciente.cedula + ' - '  + paciente.nombres + ' ' + paciente.apellidos if paciente
+  end
+  
+  def especialista_info
+    return especialista.nombres + ' ' + especialista.apellidos if especialista
   end
 end

@@ -1,21 +1,29 @@
-<%= stylesheet_link_tag    'style.calendar', media: 'all' %>
-<%= javascript_include_tag "moment.min" %>
-<%= javascript_include_tag "fullcalendar.min" %>
 <div class="row">
     <div class="col-md-12">
         <div id="calendar"></div>
     </div><!-- col-md-9 -->
     
 </div><!-- row -->
+<div class="detalle-dialog">
+	  <div class="modal-content"></div>
+</div>
+
+<div class="nuevo-dialog">
+  <div class="modal-content"></div>
+</div>
+
 <script>
     jQuery(document).ready(function() {
-            
+        
+        
         /* initialize the calendar */  
         jQuery('#calendar').fullCalendar({
             header: {
-                left: 'prev,next today',
+                //left: 'prev,next today',
+                left: '',
                 center: 'title',
-                right: 'month,agendaWeek,agendaDay'
+                //right: 'month,agendaWeek,agendaDay' //botones para manejo diario
+                right: 'today prev,next'              
             },
             monthNames: ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" ], 
 			monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
@@ -35,7 +43,30 @@
 	        eventRender: function(event, element) {	
 	        		
 			        element.find('.fc-event-title').append(event.paciente_info);
-			}
+			       
+			},
+			////se muestra en detalle la cita
+			eventClick: function(calEvent, jsEvent, view) {
+				var id = calEvent.id
+				
+				$('.detalle-dialog').data("cita", calEvent).html("<p>Fecha; " + calEvent.fecha + "</p><p>Paciente: " + calEvent.paciente_info + "</p><p>Especialista:" + calEvent.especialista_info + "</p>").dialog({
+					title: 'Detalle de la Cita',
+					height: 220,
+					width: 350,
+					modal: true,
+	
+				});
+
+				return false;		    
+			 },
+			 //creacion de la cita
+			 dayClick: function(date, jsEvent, view) {
+		         $('.nuevo-dialog').data("date", date).html('<%= escape_javascript render("form2") %>').dialog({
+			        	title: 'Registrar Cita',
+			        	width: 450,			        	
+			     });
+				$('#cita_fecha').val(date);
+		    }
 				          
         });    
     });

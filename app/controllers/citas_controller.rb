@@ -1,5 +1,5 @@
 class CitasController < ApplicationController
-  before_action :set_cita, only: [:show, :edit, :update, :destroy]
+  before_action :set_cita, only: [:show, :edit, :update, :destroy, :detalle]
   
 
   # GET /citas
@@ -29,7 +29,7 @@ class CitasController < ApplicationController
   # POST /citas.json
   def create
     @cita = Cita.new(cita_params)
-
+      
     respond_to do |format|
       if @cita.save
         format.html { redirect_to citas_path, notice: 'Cita was successfully created.' }
@@ -37,6 +37,7 @@ class CitasController < ApplicationController
       else
         format.html { render :new }
         format.json { render json: @cita.errors, status: :unprocessable_entity }
+        
       end
     end
   end
@@ -73,6 +74,20 @@ class CitasController < ApplicationController
   def ver_citas
     @citas = Cita.all
 
+  end
+  
+  def detalle
+      if @cita.nil?
+        format.html { redirect_to citas_path, notice: 'Cita was successfully updated.' }
+        format.json { render :index, status: :ok, location: @cita }
+      else
+        format.html { render :edit }
+        format.json { render json: @cita.errors, status: :unprocessable_entity }
+      end
+  end
+  
+  def _form2 
+    debbug(params[:date])
   end
   
   private

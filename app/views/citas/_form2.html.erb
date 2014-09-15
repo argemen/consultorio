@@ -1,15 +1,5 @@
-<%= form_for(@cita,  :html => {"data-type" => :json}) do |f| %>
-  <% if @cita.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@cita.errors.count, "error") %> prohibited this cita from being saved:</h2>
-
-      <ul>
-      <% @cita.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= form_for Cita.new do |f| %>
+<%= @fecha %>
 <div class="panel-body nopadding">
 	<%= f.hidden_field :paciente_id, :id => 'paciente_id'%>
   <div class="form-group">
@@ -29,3 +19,10 @@
     <button type="reset" class="btn btn-dark">Limpiar</button>
   </div>
 <% end %>
+<script>
+  jQuery(document).ready(function() {
+          
+      jQuery("select#cita_especialista_id").select2();
+
+	  });
+</script>

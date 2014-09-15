@@ -38,5 +38,7 @@
 //= require select2.min
 
 //= require jquery-ui-1.10.3.min
+//= require moment.min
+//= require fullcalendar.min
 //= require autocomplete-rails
 //= require custom
