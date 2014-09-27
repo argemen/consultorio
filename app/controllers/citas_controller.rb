@@ -1,6 +1,6 @@
 class CitasController < ApplicationController
   before_action :set_cita, only: [:show, :edit, :update, :destroy, :detalle]
-  
+  skip_before_filter :verify_authenticity_token  
 
   # GET /citas
   # GET /citas.json
@@ -32,8 +32,8 @@ class CitasController < ApplicationController
       
     respond_to do |format|
       if @cita.save
-        format.html { redirect_to citas_path, notice: 'Cita was successfully created.' }
-        format.json { render :index, status: :created, location: @cita }
+        format.html { redirect_to calendario_path, notice: 'Cita was successfully created.' }
+        format.json { render :calendario, status: :created, location: @cita }
       else
         format.html { render :new }
         format.json { render json: @cita.errors, status: :unprocessable_entity }
@@ -61,7 +61,7 @@ class CitasController < ApplicationController
   def destroy
     @cita.destroy
     respond_to do |format|
-      format.html { redirect_to citas_url, notice: 'Cita was successfully destroyed.' }
+      format.html { redirect_to calendario_url, notice: 'Cita was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -73,7 +73,14 @@ class CitasController < ApplicationController
   
   def ver_citas
     @citas = Cita.all
-
+  end
+  
+  def cambiar_cita
+    @cita = Cita.update(params[:id], fecha: params[:fecha])
+      respond_to do |format|
+        format.html { redirect_to calendario_url, notice: 'Cita was successfully changed.' }
+        format.json { head :no_content }
+      end
   end
   
   def detalle
@@ -84,10 +91,6 @@ class CitasController < ApplicationController
         format.html { render :edit }
         format.json { render json: @cita.errors, status: :unprocessable_entity }
       end
-  end
-  
-  def _form2 
-    debbug(params[:date])
   end
   
   private

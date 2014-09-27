@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   
   get 'ver_citas', to: 'citas#ver_citas'
   
+  get 'cambiar_cita/:id', to: 'citas#cambiar_cita'
+  
   resources :especialistas
 
   resources :especialidades

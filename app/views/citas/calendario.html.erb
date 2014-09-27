@@ -1,5 +1,9 @@
 <div class="row">
     <div class="col-md-12">
+    	<div id="btns">
+    		<button class="btn btn-danger" id="calendarTrash"><i class="fa fa-trash"></i>Eliminar Cita</button>
+    		<span id="message"></span>
+    	</div>
         <div id="calendar"></div>
     </div><!-- col-md-9 -->
     
@@ -13,6 +17,41 @@
 </div>
 
 <script>
+	function formatoFecha(fecha) {
+	  dArr = fecha.split("-"); 
+	  return dArr[2]+ "/" +dArr[1]+ "/" +dArr[0]; 
+	}
+	
+	//listens for drop event
+    $("#calendarTrash").droppable({
+        tolerance: 'pointer',
+        drop: function(event, ui) { 
+            if ( dragged && ui.helper && ui.helper[0] === dragged[0] ) {
+                var event = dragged[1];
+                var answer = confirm("Seguro desea eliminar cita?")
+                if (answer)
+                {
+                    $.ajax({
+                    	type: "DELETE",
+                        url:'/citas/'+event.id,
+                        dataType: 'json',
+                        async: false,
+                        error: function(xhr, ajaxOptions, thrownError){
+                            //console.log(xhr.status);
+                            //console.log(thrownError);
+                        },
+                        success: function()
+                        {
+                            $("#calendar").fullCalendar( 'removeEvents' , event.id  );
+                            $("#message").html('Cita eliminada con exito!').show();
+                            $( "#message" ).fadeOut( 3600);
+                        }
+                    });
+                }
+            }
+        }
+    });
+    
     jQuery(document).ready(function() {
         
         
@@ -43,16 +82,16 @@
 	        eventRender: function(event, element) {	
 	        		
 			        element.find('.fc-event-title').append(event.paciente_info);
-			       
+			     
 			},
 			////se muestra en detalle la cita
 			eventClick: function(calEvent, jsEvent, view) {
 				var id = calEvent.id
 				
-				$('.detalle-dialog').data("cita", calEvent).html("<p>Fecha; " + calEvent.fecha + "</p><p>Paciente: " + calEvent.paciente_info + "</p><p>Especialista:" + calEvent.especialista_info + "</p>").dialog({
+				$('.detalle-dialog').data("cita", calEvent).html("<p>Fecha; " + formatoFecha(calEvent.fecha) + "</p><p>Paciente: " + calEvent.paciente_info + "</p><p>Especialista:" + calEvent.especialista_info + "</p>").dialog({
 					title: 'Detalle de la Cita',
-					height: 220,
-					width: 350,
+					height: 200,
+					width: 320,
 					modal: true,
 	
 				});
@@ -65,10 +104,45 @@
 			        	title: 'Registrar Cita',
 			        	width: 450,			        	
 			     });
-				$('#cita_fecha').val(date);
-		    }
-				          
+				$('#cita_fecha').val(date.format());
+		   },
+		   //cambio de fecha
+		   eventDrop: function(event, delta, revertFunc) {
+				var id = event.id
+		        //alert("Ha cambiado la cita de "event.paciente_info + " para el dia: " + event.start.format());
+				//en caso de no confirmar el cambio
+		        if (!confirm("Esta seguro de cambiar cita de " + event.paciente_info + " para el dia " + event.start.format() + "?")) {
+		            revertFunc();
+		        }
+		        
+		        else{
+		        	//actualizacion de la fecha
+		        	 $.ajax({
+                    	type: "GET",
+                        url:'/cambiar_cita/' + event.id,
+                        dataType: 'json',
+                        async: false,
+                        data: {id: event.id, fecha: event.start.format()},
+                        error: function(xhr, ajaxOptions, thrownError){
+                            //console.log(xhr.status);
+                            //console.log(thrownError);
+                        },
+                        success: function() {                        
+                            $("#message").html('Cita cambiada con exito!').show();
+                            $( "#message" ).fadeOut( 3600);
+                        }
+                    });
+		        }
+		
+		    },
+		    //eliminar cita
+		    eventDragStart: function( event, jsEvent, ui, view ) { 
+	            dragged = [ ui.helper[0], event ];
+	        },
+		   	          
         });    
+        
+       
     });
-  
+  	
   </script>
