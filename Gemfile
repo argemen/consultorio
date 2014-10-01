@@ -23,6 +23,9 @@ gem 'thin'
 
 gem 'less-rails'
 
+#reportes
+gem 'query_report'
+
 #gems autocomplete
 gem 'rails4-autocomplete'
 gem 'jquery-ui-rails'

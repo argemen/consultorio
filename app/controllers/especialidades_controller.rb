@@ -1,4 +1,9 @@
+require 'query_report/helper'
+
 class EspecialidadesController < ApplicationController
+  
+  include QueryReport::Helper
+  
   before_action :set_especialidad, only: [:show, :edit, :update, :destroy]
 
   # GET /especialidades

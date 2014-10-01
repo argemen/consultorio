@@ -1,7 +1,19 @@
 <div class="row">
     <div class="col-md-12">
     	<div id="btns">
-    		<button class="btn btn-danger" id="calendarTrash"><i class="fa fa-trash"></i>Eliminar Cita</button>
+    		<div class="btn-group mr5">
+                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                  Menú <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#" id="paciente">Registrar Paciente</a></li>
+                  <li><a href="#">Registrar Cita</a></li>
+                  <li><a href="#">Citas del Día</a></li>
+                  <li class="divider"></li>
+                  <li><a href="#">Reportes</a></li>
+                </ul>
+              </div><!-- btn-group -->
+    		<button class="btn btn-danger" id="calendarTrash"><i class="fa fa-trash"></i>Eliminar Cita</button>    		
     		<span id="message"></span>
     	</div>
         <div id="calendar"></div>
@@ -16,10 +28,26 @@
   <div class="modal-content"></div>
 </div>
 
+<div class="paciente-dialog">
+	  <div class="modal-content"></div>
+</div>
+
+<div id="dialog-message" title="Operación Inválida"></div>
 <script>
+	
 	function formatoFecha(fecha) {
 	  dArr = fecha.split("-"); 
 	  return dArr[2]+ "/" +dArr[1]+ "/" +dArr[0]; 
+	}
+	
+	function hoy() {
+		//se obtiene la fecha de hoy
+	 	 var hoy = new Date();
+	 	 var d = (hoy.getDate()<10)?("0"+hoy.getDate()):hoy.getDate();
+	 	 var m = ((hoy.getMonth()+1)<10)?("0"+(hoy.getMonth()+1)):(hoy.getMonth()+1);
+	 	 var y = hoy.getFullYear();
+	 	 var fecha = y+"-"+m+"-"+d;
+	 	 return fecha;
 	}
 	
 	//listens for drop event
@@ -100,49 +128,91 @@
 			 },
 			 //creacion de la cita
 			 dayClick: function(date, jsEvent, view) {
-		         $('.nuevo-dialog').data("date", date).html('<%= escape_javascript render("form2") %>').dialog({
-			        	title: 'Registrar Cita',
-			        	width: 450,			        	
-			     });
-				$('#cita_fecha').val(date.format());
+			 	 var fecha = hoy(); 
+			 	 //en caso que la fecha seleccionada haya pasado
+			 	 if(fecha>date.format()) {
+			 	 	$(function() {
+					    $( "#dialog-message" ).dialog({
+					      modal: true,
+					      buttons: {
+					        Ok: function() {
+					          $( this ).dialog( "close" );
+					        }
+					      },
+					      //se asigna contenido del dialog
+					      open: function() {
+					      	$("#dialog-message").html("No puede registrar una cita en una fecha pasada!!")
+					      }
+					    });
+					    
+					  });
+			 	 }
+			 	 //en caso de que si se pueda
+			 	 else { 			
+			         $('.nuevo-dialog').data("date", date).html('<%= escape_javascript render("form2") %>').dialog({
+				        	title: 'Registrar Cita',
+				        	width: 450,			        	
+				     });
+					$('#cita_fecha').val(date.format());
+				}
 		   },
 		   //cambio de fecha
 		   eventDrop: function(event, delta, revertFunc) {
 				var id = event.id
-		        //alert("Ha cambiado la cita de "event.paciente_info + " para el dia: " + event.start.format());
-				//en caso de no confirmar el cambio
-		        if (!confirm("Esta seguro de cambiar cita de " + event.paciente_info + " para el dia " + event.start.format() + "?")) {
-		            revertFunc();
-		        }
-		        
-		        else{
-		        	//actualizacion de la fecha
-		        	 $.ajax({
-                    	type: "GET",
-                        url:'/cambiar_cita/' + event.id,
-                        dataType: 'json',
-                        async: false,
-                        data: {id: event.id, fecha: event.start.format()},
-                        error: function(xhr, ajaxOptions, thrownError){
-                            //console.log(xhr.status);
-                            //console.log(thrownError);
-                        },
-                        success: function() {                        
-                            $("#message").html('Cita cambiada con exito!').show();
-                            $( "#message" ).fadeOut( 3600);
-                        }
-                    });
-		        }
-		
-		    },
+		     	
+		     	//validacion de fecha
+		     	var fecha = hoy();
+		     	if(fecha>event.start.format()){
+		     		$(function() {
+					    $( "#dialog-message" ).dialog({
+					      modal: true,
+					      buttons: {
+					        Ok: function() {
+					          $( this ).dialog( "close" );
+					        }
+					      },
+					      //se asigna contenido del dialog
+					      open: function() {
+					      	$("#dialog-message").html("No puede registrar una cita en una fecha pasada!!")
+					      }
+					    });
+					    
+					  });
+					 revertFunc();
+		     	}
+		     	else {
+					//en caso de no confirmar el cambio
+			        if (!confirm("Esta seguro de cambiar cita de " + event.paciente_info + " para el dia " + formatoFecha(event.start.format()) + "?")) {
+			            revertFunc();
+			        }
+			        
+			        else{
+			        	//actualizacion de la fecha
+			        	 $.ajax({
+	                    	type: "GET",
+	                        url:'/cambiar_cita/' + event.id,
+	                        dataType: 'json',
+	                        async: false,
+	                        data: {id: event.id, fecha: event.start.format()},
+	                        error: function(xhr, ajaxOptions, thrownError){
+	                            //console.log(xhr.status);
+	                            //console.log(thrownError);
+	                        },
+	                        success: function() {                        
+	                            $("#message").html('Cita cambiada con exito!').show();
+	                            $( "#message" ).fadeOut( 3600);
+	                        }
+	                    });
+			        } // fin else de cambio de la fecha de cita
+				} //fin else de validacion
+ 		    },
 		    //eliminar cita
 		    eventDragStart: function( event, jsEvent, ui, view ) { 
 	            dragged = [ ui.helper[0], event ];
 	        },
 		   	          
         });    
-        
-       
+
     });
   	
   </script>

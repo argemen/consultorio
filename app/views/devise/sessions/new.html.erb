@@ -12,7 +12,7 @@
             <%=  image_tag 'app-icon.png', width: '100' %>
         </div>
         <h4 class="text-center mb5">Sistema de Gestion de Consultas</h4>
-        <div class="mb30"></div>
+        <div class="mb30"><%= notice %></div>
         
         <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
             <div class="input-group mb15">
